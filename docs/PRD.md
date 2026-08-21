@@ -93,6 +93,21 @@ numeric value appears in the input data. Any claim that is present in the pitch
 but absent from the inputs is flagged as unsubstantiated, and the check
 **fails**. The reason string lists each unsubstantiated claim.
 
+**Explicit Matching & Traversal Rules:**
+
+1. **Normalized Matching:** Matching is normalized, not purely literal:
+   - Strip `%`, `$`, and `,` (thousand separators) from both the claim and any input value before comparing.
+   - Normalize `x`/`×` multiplier suffixes (e.g., `3x` and `3×` are equivalent).
+   - Compare the resulting bare numeric values.
+   - Spelled-out numbers (e.g., "forty percent") are explicitly out of scope.
+2. **Input Traversal:** When searching `prospect_profile` or `campaign_brief` for a matching value, check both:
+   - Recursively stringified values (to catch numbers embedded in sentences).
+   - Direct `isinstance(v, (int, float))` checks on dict values (to catch numbers stored as actual numeric types).
+   - A number matching either path counts as substantiated.
+3. **Bare Small Integer Exemption:** Bare (unmarked, no `%`, `$`, or `x`/`×` suffix) integers below 10 are exempt from this check entirely — small counting numbers (e.g., "3 easy steps", "2 weeks") are not the kind of claim this rule targets.
+   - Numbers with a `%`, `$`, or `x`/`×` marker are **NOT** exempt even if small (e.g., "3% increase" must still be checked against the input data).
+   - This threshold must be defined as a named constant (`BARE_INTEGER_EXEMPTION_THRESHOLD = 10`), not a magic number inline, when implemented.
+
 ---
 
 ## 3. Guardrail Rule — LLM-as-Judge
