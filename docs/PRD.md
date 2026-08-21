@@ -56,8 +56,8 @@ and reports every match with the phrase and its position in the text.
 | no obligation |
 | act now |
 | limited time offer |
-| you've been selected |
-| exclusive deal just for you |
+| as seen in every major outlet |
+| trusted by industry leaders |
 
 The list is intended to be extended over time via configuration, not code
 changes.
