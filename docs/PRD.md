@@ -168,7 +168,7 @@ never be silently ignored or defaulted to pass.**
 |---|---|
 | **Method + Path** | `POST /drafts/{id}/verify` |
 | **Inputs** | `id` (path parameter — UUID of an existing draft). No request body. |
-| **Behavior** | Retrieves the draft, then runs all 5 guardrail checks (G1–G5) against it. Each check produces a verdict object `{rule, passed, reason}`. The overall status is set to `verified_pass` if **all 5** checks pass, otherwise `verified_fail`. The verdicts are stored on the draft record. Re-running verify on an already-verified draft re-runs all checks and overwrites previous verdicts. |
+| **Behavior** | Retrieves the draft, then runs all 5 guardrail checks (G1–G5) against it. Each check produces a verdict object `{rule, passed, reason}`. The overall status is set to `verified_pass` if **all 5** checks pass, otherwise `verified_fail`. The verdicts are stored as a new verification round (timestamped) **appended** to the draft's `guardrail_verdicts` list. Re-running verify on an already-verified draft re-runs all checks and appends a new round — previous rounds are preserved for audit history. The `status` field always reflects the outcome of the most recent verification round. |
 | **Outputs** | `200 OK` — the updated draft record, including the `guardrail_verdicts` list. |
 | **Error cases** | `404` if the draft ID does not exist. `502` if the LLM-judge call (G5) fails (the check is still recorded as a failure per the fail-safe rule; the endpoint itself still returns `200` with the verdict). |
 
@@ -207,7 +207,7 @@ A single draft record contains the following fields:
 | `campaign_brief` | JSON object | The input campaign brief as supplied by the caller. |
 | `generated_pitch` | string or object | The LLM-produced message. For `email` channel this is an object with `subject` (string) and `body` (string). For `sms` and `whatsapp` this is a plain string. |
 | `status` | enum: `pending_verification`, `verified_pass`, `verified_fail`, `approved`, `rejected` | Current lifecycle state. |
-| `guardrail_verdicts` | list of `{rule: string, passed: boolean, reason: string}` | One entry per guardrail check (G1–G5). Empty list until verification is run. |
+| `guardrail_verdicts` | list of `{verified_at: ISO 8601 timestamp, verdicts: [{rule: string, passed: boolean, reason: string}]}` | Append-only list of verification rounds. Each round contains a timestamp and one verdict per guardrail check (G1–G5). Empty list until verification is run. New rounds are appended on re-verification; previous rounds are never removed. |
 | `human_decision` | nullable object: `{decision: "approve" \| "reject", note: string \| null, decided_at: ISO 8601 timestamp}` | Null until a human records a decision. |
 
 ---
