@@ -192,3 +192,20 @@ actually appear in — and cause problems for — outbound PR pitches.
 - *Truncate over-length messages at generation time:* Silently alters model output and conceals format violations.
 - *Fail closed / raise GenerationError on over-length messages:* Prevents draft creation, destroying audit visibility into LLM channel limit compliance.
 
+---
+
+## ADR-011 — Native Pydantic v2 resolution of Union[EmailPitch, str] without custom discriminators
+
+**Date:** 2026-08-22
+
+**Status:** Accepted
+
+**Decision:** The `generated_pitch: Union[EmailPitch, str]` field on `Draft` relies entirely on Pydantic v2's native structural union resolution (`Draft.model_validate_json()`) without custom union discriminators, field validators, or custom serializers.
+
+**Justification:** Structural typing between `EmailPitch` (a structured object with required `subject` and `body` string keys) and `str` (a primitive string) is completely unambiguous in JSON schema representation. Pydantic v2 attempts object validation against `EmailPitch` first and falls through to `str` for primitive string payloads cleanly. Documented to avoid adding unnecessary custom deserialization logic in future extensions unless ambiguous object-vs-object unions are introduced.
+
+**Alternatives considered:**
+
+- *Tagged union discriminator (e.g., `kind: "email" | "plain"`):* Adds redundant boilerplate since JSON object vs string primitive is already structurally distinct.
+
+
