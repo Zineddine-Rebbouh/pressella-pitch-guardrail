@@ -123,17 +123,20 @@ export default function Home() {
 
   if (!draft) {
     return (
-      <div className="flex flex-col flex-1 items-center justify-center px-6 py-16">
+      <div className="flex flex-col flex-1 items-center justify-center px-6 py-16 bg-gradient-to-b from-[#0a0b10] via-[#0d0e17] to-[#0a0b10] min-h-screen">
         {/* Header */}
         <div className="w-full max-w-2xl mb-10 text-center">
-          <p className="font-mono text-[11px] text-text-dim tracking-[0.3em] uppercase mb-2 font-bold">
-            Pressella Outbound Compliance Engine
-          </p>
-          <h1 className="font-serif text-4xl font-bold text-text-primary tracking-tight">
+          <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full mb-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+            <span className="font-mono text-[11px] font-semibold text-indigo-300 tracking-wider uppercase">
+              Pressella Outbound Compliance Engine
+            </span>
+          </div>
+          <h1 className="font-serif text-4xl font-bold text-slate-100 tracking-tight leading-tight">
             Pitch Intake & Briefing Dossier
           </h1>
-          <p className="font-sans text-sm text-text-secondary mt-3 max-w-xl mx-auto leading-relaxed">
-            Enter campaign parameters and target prospect details. The engine will synthesize a pitch draft and execute the 5-layer compliance verification pipeline before human sign-off.
+          <p className="font-sans text-sm text-slate-400 mt-3 max-w-xl mx-auto leading-relaxed">
+            Specify prospect dossier data and campaign strategy. The engine will synthesize a targeted outreach pitch and execute the 5-layer compliance verification pipeline.
           </p>
         </div>
 
@@ -169,13 +172,13 @@ export default function Home() {
   return (
     <div className="flex flex-col flex-1 min-h-screen">
       {/* Top bar */}
-      <header className="flex items-center justify-between px-8 py-4 border-b border-border bg-bg-surface/60">
+      <header className="flex items-center justify-between px-8 py-4 border-b border-border bg-bg-surface/80 backdrop-blur-md sticky top-0 z-10">
         <div className="flex items-center gap-4">
-          <p className="font-mono text-[11px] text-text-dim tracking-[0.3em] uppercase font-bold">
-            Pressella Outbound Console
+          <p className="font-mono text-[11px] text-indigo-400 tracking-[0.25em] uppercase font-bold">
+            Pressella Review Console
           </p>
-          <span className="text-border">/</span>
-          <p className="font-mono text-xs text-text-muted">
+          <span className="text-slate-700">/</span>
+          <p className="font-mono text-xs text-slate-400">
             Draft ID: {draft.id.slice(0, 8)}…
           </p>
         </div>
@@ -188,40 +191,40 @@ export default function Home() {
         <section className="w-[55%] border-r border-border overflow-y-auto">
           <div className="px-10 py-8">
             {/* Channel tag */}
-            <div className="flex items-center justify-between mb-6 border-b border-border-subtle pb-4">
-              <span className="font-mono text-[10px] text-text-primary tracking-[0.25em] uppercase border border-border rounded px-2.5 py-1 bg-bg-raised font-bold">
+            <div className="flex items-center justify-between mb-6 border-b border-slate-800/80 pb-4">
+              <span className="font-mono text-[10px] text-indigo-300 tracking-[0.2em] uppercase border border-indigo-500/30 rounded px-3 py-1 bg-indigo-500/10 font-bold">
                 Channel: {draft.channel}
               </span>
-              <span className="font-mono text-[11px] text-text-dim">
+              <span className="font-mono text-[11px] text-slate-500">
                 Created: {formatTimestamp(draft.created_at)}
               </span>
             </div>
 
             {/* Pitch content document */}
-            <div className="bg-bg-surface border border-border rounded-sm p-6 shadow-md">
+            <div className="bg-[#12141d] border border-slate-800/90 rounded-xl p-7 shadow-xl">
               <PitchViewer pitch={draft.generated_pitch} channel={draft.channel} />
             </div>
 
             {/* Input data accordion */}
-            <details className="mt-6 group border border-border-subtle rounded p-4 bg-bg-surface/40">
-              <summary className="font-mono text-[10px] text-text-dim tracking-[0.2em] uppercase cursor-pointer hover:text-text-muted transition-colors list-none flex items-center justify-between font-bold">
+            <details className="mt-6 group border border-slate-800/80 rounded-xl p-4 bg-[#12141d]/50">
+              <summary className="font-mono text-[10px] text-slate-400 tracking-[0.2em] uppercase cursor-pointer hover:text-slate-200 transition-colors list-none flex items-center justify-between font-bold">
                 <span>View Dossier Input Data</span>
-                <span className="font-mono text-xs text-text-dim group-open:rotate-180 transition-transform">▼</span>
+                <span className="font-mono text-xs text-slate-500 group-open:rotate-180 transition-transform">▼</span>
               </summary>
-              <div className="mt-3 grid grid-cols-2 gap-4 pt-3 border-t border-border-subtle">
-                <div className="bg-bg-raised rounded-sm p-4 border border-border-subtle">
-                  <span className="font-mono text-[10px] text-text-dim tracking-[0.2em] uppercase block mb-2 font-bold">
+              <div className="mt-3 grid grid-cols-2 gap-4 pt-3 border-t border-slate-800/80">
+                <div className="bg-[#0e0f17] rounded-lg p-4 border border-slate-800/80">
+                  <span className="font-mono text-[10px] text-slate-400 tracking-[0.2em] uppercase block mb-2 font-bold">
                     Prospect Profile
                   </span>
-                  <pre className="font-mono text-xs text-text-muted whitespace-pre-wrap break-words leading-relaxed">
+                  <pre className="font-mono text-xs text-slate-300 whitespace-pre-wrap break-words leading-relaxed">
                     {JSON.stringify(draft.prospect_profile, null, 2)}
                   </pre>
                 </div>
-                <div className="bg-bg-raised rounded-sm p-4 border border-border-subtle">
-                  <span className="font-mono text-[10px] text-text-dim tracking-[0.2em] uppercase block mb-2 font-bold">
+                <div className="bg-[#0e0f17] rounded-lg p-4 border border-slate-800/80">
+                  <span className="font-mono text-[10px] text-slate-400 tracking-[0.2em] uppercase block mb-2 font-bold">
                     Campaign Brief
                   </span>
-                  <pre className="font-mono text-xs text-text-muted whitespace-pre-wrap break-words leading-relaxed">
+                  <pre className="font-mono text-xs text-slate-300 whitespace-pre-wrap break-words leading-relaxed">
                     {JSON.stringify(draft.campaign_brief, null, 2)}
                   </pre>
                 </div>
