@@ -1,26 +1,129 @@
 @import "tailwindcss";
 
+/* ── Dark-only audit console color system ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-base: #141418;
+  --bg-surface: #1c1c22;
+  --bg-raised: #232329;
+  --border: #2a2a32;
+  --border-subtle: #22222a;
+  --text-primary: #e4e4ec;
+  --text-secondary: #a8a8b8;
+  --text-muted: #78788a;
+  --text-dim: #52525e;
+
+  /* Verdict accents — hard, saturated, unambiguous */
+  --verdict-pass: #22c55e;
+  --verdict-fail: #ef4444;
+  --verdict-pending: #f59e0b;
+
+  /* Functional */
+  --focus-ring: #3b82f6;
+  --overlay: rgba(0, 0, 0, 0.55);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-raised: var(--bg-raised);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-dim: var(--text-dim);
+  --color-verdict-pass: var(--verdict-pass);
+  --color-verdict-fail: var(--verdict-fail);
+  --color-verdict-pending: var(--verdict-pending);
+  --color-focus-ring: var(--focus-ring);
+  --font-serif: var(--font-playfair);
+  --font-mono: var(--font-jetbrains);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ── Base ── */
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-playfair), Georgia, "Times New Roman", serif;
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: var(--text-primary);
+}
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
+
+/* ── Focus ring utility ── */
+*:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Staggered verdict reveal ── */
+@keyframes verdict-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.verdict-row {
+  animation: verdict-reveal 0.35s ease-out both;
+}
+
+/* ── Pulse for loading states ── */
+@keyframes audit-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.audit-pulse {
+  animation: audit-pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Shared form field ── */
+.field-input {
+  width: 100%;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.15s ease;
+}
+
+.field-input::placeholder {
+  color: var(--text-dim);
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--focus-ring);
+}
+
+.field-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
