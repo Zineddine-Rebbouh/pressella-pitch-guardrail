@@ -157,3 +157,38 @@ actually appear in — and cause problems for — outbound PR pitches.
 
 - *Filter-then-check (drop malformed, pass if any valid remain):* Would hide model output errors and violate fail-safe intent.
 - *Zero-valid-entries-only check:* Would pass a response with one valid + one malformed claim, incorrectly treating it as trustworthy.
+
+---
+
+## ADR-009 — Generation vs Verification failure asymmetry (502 Abort vs 200 Recorded Fail-Safe)
+
+**Date:** 2026-08-22
+
+**Status:** Accepted
+
+**Decision:** Draft generation (`generate_pitch` / `POST /drafts`) aborts draft creation and raises `GenerationError` (yielding `502 Bad Gateway` at the HTTP layer per PRD §4.1) when the LLM call fails or returns unparseable schema. No draft record is stored in SQLite. By contrast, verification (`POST /drafts/{id}/verify`) records G5 judge LLM failures as a `200 OK` verdict round with `status: verified_fail` and `passed: false`.
+
+**Justification:** A failed generation attempt produces no usable outreach artifact; persisting broken drafts would pollute the database with incomplete data. Verification, however, is an audit process over an existing draft: a failed judge check must be recorded as an auditable compliance failure (`verified_fail`) rather than aborting the verification pipeline.
+
+**Alternatives considered:**
+
+- *Persist failed draft on generation error:* Pollutes SQLite with corrupted drafts that lack content.
+- *Return 502 on verification G5 failure:* Destroys verification audit trail and prevents human review of deterministic rules G1–G4.
+
+---
+
+## ADR-010 — Generator length limit non-enforcement (Decoupling generation from evaluation)
+
+**Date:** 2026-08-22
+
+**Status:** Accepted
+
+**Decision:** `generate_pitch` (`backend/app/services/generator.py`) returns raw LLM text output for SMS and WhatsApp channels without validating, truncating, or rejecting over-limit messages (e.g. text > 160 chars for SMS). Length enforcement is strictly decoupled and delegated to G3 (`check_channel_format`) at verification time.
+
+**Justification:** Preserves separation of concerns (generation synthesizes; verification audits) and audit trail integrity. Failing closed on length during generation would destroy over-length drafts before they can be persisted and flagged, preventing compliance teams from measuring model failure rates on channel constraints.
+
+**Alternatives considered:**
+
+- *Truncate over-length messages at generation time:* Silently alters model output and conceals format violations.
+- *Fail closed / raise GenerationError on over-length messages:* Prevents draft creation, destroying audit visibility into LLM channel limit compliance.
+
