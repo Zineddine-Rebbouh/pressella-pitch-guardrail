@@ -29,10 +29,16 @@ class EmailPitch(BaseModel):
     body: str
 
 
+class FlaggedClaim(BaseModel):
+    claim: str
+    reason: str
+
+
 class GuardrailVerdict(BaseModel):
     rule: str
     passed: bool
     reason: str
+    flagged_claims: list[FlaggedClaim] = Field(default_factory=list)
 
 
 class VerificationRound(BaseModel):

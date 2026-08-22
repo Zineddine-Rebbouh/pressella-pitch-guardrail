@@ -68,3 +68,13 @@ phrases (e.g., "you've been selected", "exclusive deal just for you").
 **Justification:** A PR consultancy's compliance risk is fabricated credibility,
 not e-commerce spam. The deny-list should reflect the language patterns that
 actually appear in — and cause problems for — outbound PR pitches.
+
+---
+
+## ADR-004 — GuardrailVerdict extended with flagged_claims for LLM-as-judge rule
+
+**Date:** 2026-08-22
+
+**Status:** Accepted
+
+**Decision:** GuardrailVerdict extended with `flagged_claims` (`list[FlaggedClaim]`) to support the `llm_judge` rule's structured claim-level feedback, needed for UI-level per-claim explainability.
