@@ -126,12 +126,6 @@ export default function Home() {
       <div className="flex flex-col flex-1 items-center justify-center px-6 py-16 bg-gradient-to-b from-[#0a0b10] via-[#0d0e17] to-[#0a0b10] min-h-screen">
         {/* Header */}
         <div className="w-full max-w-2xl mb-10 text-center">
-          <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-            <span className="font-mono text-[11px] font-semibold text-indigo-300 tracking-wider uppercase">
-              Pressella Outbound Compliance Engine
-            </span>
-          </div>
           <h1 className="font-sans text-3xl font-bold text-slate-100 tracking-tight leading-tight">
             Pitch Intake & Briefing Dossier
           </h1>
