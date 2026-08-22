@@ -46,11 +46,11 @@ export function IntakeForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="w-full max-w-2xl bg-bg-surface border border-border rounded-sm"
+      className="w-full max-w-2xl bg-bg-surface border border-border rounded-sm shadow-xl"
     >
       {/* ── Section: Prospect Profile ── */}
       <div className="border-b border-border px-6 py-5">
-        <h2 className="font-mono text-[11px] text-text-dim tracking-[0.25em] uppercase mb-5">
+        <h2 className="font-mono text-[11px] font-bold text-text-dim tracking-[0.25em] uppercase mb-5">
           § Prospect Profile
         </h2>
         <div className="grid grid-cols-2 gap-x-6 gap-y-4">
@@ -61,7 +61,7 @@ export function IntakeForm({
               onChange={(e) => setCompanyName(e.target.value)}
               required
               disabled={isGenerating}
-              placeholder="Acme Corp"
+              placeholder="TechFlow Solutions"
               className="field-input"
             />
           </FieldGroup>
@@ -72,7 +72,7 @@ export function IntakeForm({
               onChange={(e) => setContactRole(e.target.value)}
               required
               disabled={isGenerating}
-              placeholder="VP of Marketing"
+              placeholder="VP of Enterprise Strategy"
               className="field-input"
             />
           </FieldGroup>
@@ -83,20 +83,20 @@ export function IntakeForm({
               onChange={(e) => setIndustry(e.target.value)}
               required
               disabled={isGenerating}
-              placeholder="SaaS / FinTech / Healthcare…"
+              placeholder="B2B Enterprise Software"
               className="field-input"
             />
           </FieldGroup>
-          <div /> {/* spacer for grid alignment */}
+          <div /> {/* Spacer */}
           <div className="col-span-2">
-            <FieldGroup label="Talking Points & Data" required>
+            <FieldGroup label="Talking Points & Verified Data" required>
               <textarea
                 value={talkingPoints}
                 onChange={(e) => setTalkingPoints(e.target.value)}
                 required
                 disabled={isGenerating}
                 rows={3}
-                placeholder="Key facts, metrics, achievements — e.g. 'Raised $12M Series A, 40% YoY growth, 200+ enterprise clients'"
+                placeholder="Verified metrics & accomplishments — e.g., 'Closed $15M Series B, expanded to 500+ enterprise clients, achieved 150% YoY growth'"
                 className="field-input resize-y"
               />
             </FieldGroup>
@@ -106,41 +106,41 @@ export function IntakeForm({
 
       {/* ── Section: Campaign Brief ── */}
       <div className="border-b border-border px-6 py-5">
-        <h2 className="font-mono text-[11px] text-text-dim tracking-[0.25em] uppercase mb-5">
+        <h2 className="font-mono text-[11px] font-bold text-text-dim tracking-[0.25em] uppercase mb-5">
           § Campaign Brief
         </h2>
         <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-          <FieldGroup label="Campaign Goal" required>
+          <FieldGroup label="Campaign Objective" required>
             <input
               type="text"
               value={campaignGoal}
               onChange={(e) => setCampaignGoal(e.target.value)}
               required
               disabled={isGenerating}
-              placeholder="Schedule product demo"
+              placeholder="Schedule executive briefing for Q3 partnership roadmap"
               className="field-input"
             />
           </FieldGroup>
-          <FieldGroup label="Tone" required>
+          <FieldGroup label="Tone & Positioning" required>
             <input
               type="text"
               value={campaignTone}
               onChange={(e) => setCampaignTone(e.target.value)}
               required
               disabled={isGenerating}
-              placeholder="Professional, consultative, direct…"
+              placeholder="Professional, direct, and consultative"
               className="field-input"
             />
           </FieldGroup>
           <div className="col-span-2">
-            <FieldGroup label="Key Talking Points" required>
+            <FieldGroup label="Key Differentiators & Value Proposition" required>
               <textarea
                 value={keyPoints}
                 onChange={(e) => setKeyPoints(e.target.value)}
                 required
                 disabled={isGenerating}
                 rows={2}
-                placeholder="Main pitch angles or value proposition to highlight"
+                placeholder="Core strategic messaging points to emphasize"
                 className="field-input resize-y"
               />
             </FieldGroup>
@@ -151,8 +151,8 @@ export function IntakeForm({
       {/* ── Section: Channel & Action ── */}
       <div className="px-6 py-5 flex items-center justify-between bg-bg-raised/40">
         <div>
-          <span className="font-mono text-[10px] text-text-dim tracking-widest uppercase block mb-1.5">
-            Target Channel
+          <span className="font-mono text-[10px] text-text-dim tracking-widest uppercase block mb-1.5 font-bold">
+            Outreach Channel
           </span>
           <div className="flex items-center gap-1 bg-bg-raised p-1 rounded border border-border">
             {CHANNELS.map((ch) => (
@@ -163,7 +163,7 @@ export function IntakeForm({
                 disabled={isGenerating}
                 className={`font-mono text-xs px-3 py-1.5 rounded transition-all cursor-pointer ${
                   channel === ch
-                    ? "bg-bg-surface text-text-primary shadow-xs font-bold"
+                    ? "bg-bg-surface text-text-primary shadow-xs font-bold border border-border"
                     : "text-text-muted hover:text-text-secondary"
                 }`}
               >
@@ -176,16 +176,9 @@ export function IntakeForm({
         <button
           type="submit"
           disabled={isGenerating}
-          className="font-mono text-xs tracking-wider uppercase px-6 py-3 rounded bg-text-primary text-bg-base font-bold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="font-mono text-xs tracking-wider uppercase px-6 py-3 rounded bg-text-primary text-bg-base font-bold hover:bg-text-secondary transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isGenerating ? (
-            <span className="flex items-center gap-2">
-              <span className="inline-block animate-spin">⟳</span>
-              Generating Pitch…
-            </span>
-          ) : (
-            "Generate Pitch Draft →"
-          )}
+          {isGenerating ? "Synthesizing Pitch Draft..." : "Synthesize Pitch Draft ->"}
         </button>
       </div>
     </form>

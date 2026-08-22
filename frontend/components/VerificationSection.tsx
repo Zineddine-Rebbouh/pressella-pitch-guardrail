@@ -33,7 +33,7 @@ export function VerificationSection({
       {/* Verify header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-serif text-2xl font-bold text-text-primary tracking-tight">
-          Guardrail Audit
+          Compliance Audit Pipeline
         </h2>
         <button
           onClick={onVerify}
@@ -50,9 +50,9 @@ export function VerificationSection({
           `}
         >
           {isVerifying
-            ? "Running Checks…"
+            ? "Executing Rules..."
             : hasVerdict
-            ? "Re-run Guardrails"
+            ? "Re-Run Verification"
             : "Run Guardrails"}
         </button>
       </div>
@@ -65,19 +65,19 @@ export function VerificationSection({
       {latestRound && (
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <span className="font-mono text-[10px] text-text-dim tracking-[0.25em] uppercase">
-              Round {draft.guardrail_verdicts.length}
+            <span className="font-mono text-[10px] text-text-dim tracking-[0.25em] uppercase font-bold">
+              Verification Round {draft.guardrail_verdicts.length}
             </span>
             <span className="font-mono text-[10px] text-text-dim">
               {formatTimestamp(latestRound.verified_at)}
             </span>
             {latestRound.verdicts.every((v) => v.passed) ? (
-              <span className="font-mono text-[10px] text-verdict-pass tracking-widest ml-auto font-bold">
-                ALL PASS
+              <span className="font-mono text-[10px] text-verdict-pass tracking-widest ml-auto font-bold border border-verdict-pass/30 rounded px-2 py-0.5 bg-verdict-pass/10">
+                ALL RULES PASSED
               </span>
             ) : (
-              <span className="font-mono text-[10px] text-verdict-fail tracking-widest ml-auto font-bold">
-                {latestRound.verdicts.filter((v) => !v.passed).length} FAILED
+              <span className="font-mono text-[10px] text-verdict-fail tracking-widest ml-auto font-bold border border-verdict-fail/30 rounded px-2 py-0.5 bg-verdict-fail/10">
+                {latestRound.verdicts.filter((v) => !v.passed).length} DISCREPANCIES DETECTED
               </span>
             )}
           </div>
@@ -111,25 +111,22 @@ export function VerificationSection({
 
       {/* No verdict yet prompt */}
       {!hasVerdict && !isVerifying && (
-        <div className="flex flex-col items-center justify-center py-16 text-center">
-          <p className="font-mono text-sm text-text-dim mb-1">
-            No guardrail checks have been run.
+        <div className="flex flex-col items-center justify-center py-16 text-center border border-dashed border-border rounded p-6 bg-bg-surface/30">
+          <p className="font-mono text-sm text-text-muted mb-1 font-medium">
+            Pending Guardrail Verification
           </p>
           <p className="font-mono text-xs text-text-dim">
-            Click &ldquo;Run Guardrails&rdquo; to begin verification.
+            Click &ldquo;Run Guardrails&rdquo; above to execute the 5 compliance checks.
           </p>
         </div>
       )}
 
       {/* Previous rounds history */}
       {previousRounds.length > 0 && (
-        <details className="mt-6 group">
-          <summary className="font-mono text-[10px] text-text-dim tracking-[0.2em] uppercase cursor-pointer hover:text-text-muted transition-colors list-none flex items-center gap-2">
-            <span className="text-text-dim group-open:rotate-90 transition-transform duration-200 inline-block">
-              ▸
-            </span>
-            {previousRounds.length} Previous Round
-            {previousRounds.length > 1 ? "s" : ""}
+        <details className="mt-6 group border-t border-border-subtle pt-4">
+          <summary className="font-mono text-[10px] text-text-dim tracking-[0.2em] uppercase cursor-pointer hover:text-text-muted transition-colors list-none flex items-center justify-between">
+            <span>Historical Audit Log ({previousRounds.length} prior round{previousRounds.length > 1 ? "s" : ""})</span>
+            <span className="font-mono text-xs text-text-dim group-open:rotate-180 transition-transform">▼</span>
           </summary>
           <div className="mt-3 space-y-4">
             {previousRounds.map((round, ri) => {
@@ -140,22 +137,20 @@ export function VerificationSection({
                   className="bg-bg-surface/40 border border-border-subtle rounded-sm p-4"
                 >
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="font-mono text-[10px] text-text-dim tracking-[0.2em]">
+                    <span className="font-mono text-[10px] text-text-dim tracking-[0.2em] font-bold">
                       Round {ri + 1}
                     </span>
                     <span className="font-mono text-[10px] text-text-dim">
                       {formatTimestamp(round.verified_at)}
                     </span>
                     <span
-                      className={`font-mono text-[10px] tracking-widest ml-auto ${
+                      className={`font-mono text-[10px] tracking-widest ml-auto font-bold ${
                         allPassed ? "text-verdict-pass" : "text-verdict-fail"
                       }`}
                     >
                       {allPassed
-                        ? "ALL PASS"
-                        : `${
-                            round.verdicts.filter((v) => !v.passed).length
-                          } FAILED`}
+                        ? "PASS"
+                        : `${round.verdicts.filter((v) => !v.passed).length} FAIL`}
                     </span>
                   </div>
                   <div className="space-y-1">
@@ -166,10 +161,10 @@ export function VerificationSection({
                       >
                         <span
                           className={
-                            v.passed ? "text-verdict-pass" : "text-verdict-fail"
+                            v.passed ? "text-verdict-pass font-bold" : "text-verdict-fail font-bold"
                           }
                         >
-                          {v.passed ? "✓" : "✗"}
+                          [{v.passed ? "PASS" : "FAIL"}]
                         </span>
                         <span className="text-text-muted">{v.rule}</span>
                       </div>

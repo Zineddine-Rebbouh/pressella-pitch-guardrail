@@ -37,7 +37,7 @@ export default function Home() {
   /* ── Decision state ── */
   const [decisionNote, setDecisionNote] = useState("");
 
-  /* ── Animation trigger: index of verification round that should animate ── */
+  /* ── Animation trigger ── */
   const [animatingRound, setAnimatingRound] = useState<number | null>(null);
 
   /* ── Handlers ── */
@@ -125,17 +125,15 @@ export default function Home() {
     return (
       <div className="flex flex-col flex-1 items-center justify-center px-6 py-16">
         {/* Header */}
-        <div className="w-full max-w-2xl mb-10">
-          <p className="font-mono text-[10px] text-text-dim tracking-[0.3em] uppercase mb-2">
-            Pressella Pitch Guardrail
+        <div className="w-full max-w-2xl mb-10 text-center">
+          <p className="font-mono text-[11px] text-text-dim tracking-[0.3em] uppercase mb-2 font-bold">
+            Pressella Outbound Compliance Engine
           </p>
           <h1 className="font-serif text-4xl font-bold text-text-primary tracking-tight">
-            Intake Briefing
+            Pitch Intake & Briefing Dossier
           </h1>
-          <p className="font-serif text-lg text-text-muted mt-2 italic">
-            Prepare the prospect dossier and campaign parameters. The system
-            will generate a pitch draft and run it through five guardrail
-            checks before human review.
+          <p className="font-sans text-sm text-text-secondary mt-3 max-w-xl mx-auto leading-relaxed">
+            Enter campaign parameters and target prospect details. The engine will synthesize a pitch draft and execute the 5-layer compliance verification pipeline before human sign-off.
           </p>
         </div>
 
@@ -173,12 +171,12 @@ export default function Home() {
       {/* Top bar */}
       <header className="flex items-center justify-between px-8 py-4 border-b border-border bg-bg-surface/60">
         <div className="flex items-center gap-4">
-          <p className="font-mono text-[10px] text-text-dim tracking-[0.3em] uppercase">
-            Pressella Pitch Guardrail
+          <p className="font-mono text-[11px] text-text-dim tracking-[0.3em] uppercase font-bold">
+            Pressella Outbound Console
           </p>
           <span className="text-border">/</span>
           <p className="font-mono text-xs text-text-muted">
-            Draft {draft.id.slice(0, 8)}…
+            Draft ID: {draft.id.slice(0, 8)}…
           </p>
         </div>
         <StatusBadge status={draft.status} />
@@ -190,42 +188,40 @@ export default function Home() {
         <section className="w-[55%] border-r border-border overflow-y-auto">
           <div className="px-10 py-8">
             {/* Channel tag */}
-            <div className="flex items-center gap-3 mb-6">
-              <span className="font-mono text-[10px] text-text-dim tracking-[0.25em] uppercase border border-border rounded px-2 py-1">
-                {draft.channel}
+            <div className="flex items-center justify-between mb-6 border-b border-border-subtle pb-4">
+              <span className="font-mono text-[10px] text-text-primary tracking-[0.25em] uppercase border border-border rounded px-2.5 py-1 bg-bg-raised font-bold">
+                Channel: {draft.channel}
               </span>
-              <span className="font-mono text-[10px] text-text-dim">
-                {formatTimestamp(draft.created_at)}
+              <span className="font-mono text-[11px] text-text-dim">
+                Created: {formatTimestamp(draft.created_at)}
               </span>
             </div>
 
             {/* Pitch content document */}
-            <div className="bg-bg-surface border border-border rounded-sm p-6">
+            <div className="bg-bg-surface border border-border rounded-sm p-6 shadow-md">
               <PitchViewer pitch={draft.generated_pitch} channel={draft.channel} />
             </div>
 
             {/* Input data accordion */}
-            <details className="mt-6 group">
-              <summary className="font-mono text-[10px] text-text-dim tracking-[0.2em] uppercase cursor-pointer hover:text-text-muted transition-colors list-none flex items-center gap-2">
-                <span className="text-text-dim group-open:rotate-90 transition-transform duration-200 inline-block">
-                  ▸
-                </span>
-                Input Data
+            <details className="mt-6 group border border-border-subtle rounded p-4 bg-bg-surface/40">
+              <summary className="font-mono text-[10px] text-text-dim tracking-[0.2em] uppercase cursor-pointer hover:text-text-muted transition-colors list-none flex items-center justify-between font-bold">
+                <span>View Dossier Input Data</span>
+                <span className="font-mono text-xs text-text-dim group-open:rotate-180 transition-transform">▼</span>
               </summary>
-              <div className="mt-3 grid grid-cols-2 gap-4">
+              <div className="mt-3 grid grid-cols-2 gap-4 pt-3 border-t border-border-subtle">
                 <div className="bg-bg-raised rounded-sm p-4 border border-border-subtle">
-                  <span className="font-mono text-[10px] text-text-dim tracking-[0.2em] uppercase block mb-2">
+                  <span className="font-mono text-[10px] text-text-dim tracking-[0.2em] uppercase block mb-2 font-bold">
                     Prospect Profile
                   </span>
-                  <pre className="font-mono text-xs text-text-muted whitespace-pre-wrap break-words">
+                  <pre className="font-mono text-xs text-text-muted whitespace-pre-wrap break-words leading-relaxed">
                     {JSON.stringify(draft.prospect_profile, null, 2)}
                   </pre>
                 </div>
                 <div className="bg-bg-raised rounded-sm p-4 border border-border-subtle">
-                  <span className="font-mono text-[10px] text-text-dim tracking-[0.2em] uppercase block mb-2">
+                  <span className="font-mono text-[10px] text-text-dim tracking-[0.2em] uppercase block mb-2 font-bold">
                     Campaign Brief
                   </span>
-                  <pre className="font-mono text-xs text-text-muted whitespace-pre-wrap break-words">
+                  <pre className="font-mono text-xs text-text-muted whitespace-pre-wrap break-words leading-relaxed">
                     {JSON.stringify(draft.campaign_brief, null, 2)}
                   </pre>
                 </div>

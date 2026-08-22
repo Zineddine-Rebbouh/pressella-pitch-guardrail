@@ -30,22 +30,23 @@ export function DecisionSection({
       {/* Already decided — show recorded decision */}
       {isDecided && draft.human_decision && (
         <div className="flex items-center gap-3">
+          <span className="font-mono text-[10px] text-text-dim uppercase tracking-widest">
+            Human Decision:
+          </span>
           <span
-            className={`font-mono text-sm tracking-[0.15em] uppercase font-bold ${
+            className={`font-mono text-xs tracking-[0.15em] uppercase font-bold px-2 py-0.5 rounded border ${
               draft.human_decision.decision === "approve"
-                ? "text-verdict-pass"
-                : "text-verdict-fail"
+                ? "text-verdict-pass bg-verdict-pass/10 border-verdict-pass/30"
+                : "text-verdict-fail bg-verdict-fail/10 border-verdict-fail/30"
             }`}
           >
-            {draft.human_decision.decision === "approve"
-              ? "✓ Approved"
-              : "✗ Rejected"}
+            {draft.human_decision.decision === "approve" ? "Approved" : "Rejected"}
           </span>
           <span className="font-mono text-[10px] text-text-dim">
             {formatTimestamp(draft.human_decision.decided_at)}
           </span>
           {draft.human_decision.note && (
-            <p className="font-mono text-xs text-text-muted ml-auto max-w-[50%] truncate">
+            <p className="font-mono text-xs text-text-muted ml-auto max-w-[45%] truncate">
               &ldquo;{draft.human_decision.note}&rdquo;
             </p>
           )}
@@ -55,13 +56,13 @@ export function DecisionSection({
       {/* Active decision controls */}
       {!isDecided && (
         <>
-          <div className="flex items-center gap-3 mb-3">
-            <h3 className="font-mono text-[10px] text-text-dim tracking-[0.25em] uppercase">
-              Human Decision
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <h3 className="font-mono text-[10px] font-bold text-text-dim tracking-[0.25em] uppercase">
+              Compliance Officer Decision
             </h3>
             {!canDecide && (
-              <span className="font-mono text-[10px] text-verdict-pending">
-                Run guardrails before deciding
+              <span className="font-mono text-[10px] text-verdict-pending font-medium">
+                Execute guardrails prior to decision
               </span>
             )}
           </div>
@@ -71,9 +72,9 @@ export function DecisionSection({
             value={decisionNote}
             onChange={(e) => setDecisionNote(e.target.value)}
             disabled={!canDecide || isDeciding}
-            placeholder="Optional reviewer note…"
+            placeholder="Reviewer compliance notes or sign-off remarks..."
             rows={2}
-            className="field-input mb-3 resize-none text-sm"
+            className="field-input mb-3 resize-none text-xs"
           />
 
           {decisionError && (
@@ -88,31 +89,31 @@ export function DecisionSection({
               onClick={() => onDecision("approve")}
               disabled={!canDecide || isDeciding}
               className={`
-                flex-1 font-mono text-sm tracking-[0.15em] uppercase py-3 rounded-sm
+                flex-1 font-mono text-xs font-bold tracking-[0.15em] uppercase py-3 rounded-sm
                 cursor-pointer transition-all duration-200 border
                 ${
                   canDecide && !isDeciding
-                    ? "bg-verdict-pass/10 text-verdict-pass border-verdict-pass/30 hover:bg-verdict-pass/20 hover:border-verdict-pass"
-                    : "bg-bg-raised text-text-dim border-border cursor-not-allowed opacity-50"
+                    ? "bg-verdict-pass/10 text-verdict-pass border-verdict-pass/40 hover:bg-verdict-pass/20 hover:border-verdict-pass"
+                    : "bg-bg-raised text-text-dim border-border cursor-not-allowed opacity-40"
                 }
               `}
             >
-              {isDeciding ? "…" : "Approve"}
+              {isDeciding ? "Recording..." : "Approve Pitch"}
             </button>
             <button
               onClick={() => onDecision("reject")}
               disabled={!canDecide || isDeciding}
               className={`
-                flex-1 font-mono text-sm tracking-[0.15em] uppercase py-3 rounded-sm
+                flex-1 font-mono text-xs font-bold tracking-[0.15em] uppercase py-3 rounded-sm
                 cursor-pointer transition-all duration-200 border
                 ${
                   canDecide && !isDeciding
-                    ? "bg-verdict-fail/10 text-verdict-fail border-verdict-fail/30 hover:bg-verdict-fail/20 hover:border-verdict-fail"
-                    : "bg-bg-raised text-text-dim border-border cursor-not-allowed opacity-50"
+                    ? "bg-verdict-fail/10 text-verdict-fail border-verdict-fail/40 hover:bg-verdict-fail/20 hover:border-verdict-fail"
+                    : "bg-bg-raised text-text-dim border-border cursor-not-allowed opacity-40"
                 }
               `}
             >
-              {isDeciding ? "…" : "Reject"}
+              {isDeciding ? "Recording..." : "Reject Pitch"}
             </button>
           </div>
         </>
