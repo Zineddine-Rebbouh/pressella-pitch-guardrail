@@ -208,4 +208,21 @@ actually appear in — and cause problems for — outbound PR pitches.
 
 - *Tagged union discriminator (e.g., `kind: "email" | "plain"`):* Adds redundant boilerplate since JSON object vs string primitive is already structurally distinct.
 
+---
+
+## ADR-012 — Broaden requires-python from >=3.14 to >=3.10 for CI runner compatibility
+
+**Date:** 2026-08-22
+
+**Status:** Accepted
+
+**Decision:** Loosen `requires-python` in `backend/pyproject.toml` from `>=3.14` to `>=3.10`.
+
+**Justification:** The initial `>=3.14` pin was an environment-specific default from the local dev machine (Python 3.14.0). Codebase audit verified that all app and test code relies exclusively on standard Python 3.10+ features (PEP 585 built-in generics like `list[str]`, `dict[str, Any]`, standard `typing`, standard library `sqlite3` and `json`). Zero Python 3.14-only language features or stdlib APIs are used. Loosening the constraint allows CI runners (e.g. GitHub Actions `setup-python` with Python 3.12) to build and execute the backend without version rejection.
+
+**Alternatives considered:**
+
+- *Require Python 3.14+ in CI:* Fails on standard GitHub Actions runners where Python 3.12 is the primary stable runtime.
+
+
 
