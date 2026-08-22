@@ -23,7 +23,7 @@ def check_llm_judge(draft: Draft) -> GuardrailVerdict:
         "Assess two criteria:\n"
         "1. Tone alignment: Is the tone appropriate and non-pushy?\n"
         "2. Claim traceability: Can every factual claim in the pitch be traced to the prospect profile or campaign brief?\n\n"
-        "Respond ONLY with a JSON object matching this exact schema (no markdown, no preamble):\n"
+        "Respond ONLY with a raw JSON object matching this exact schema. Do NOT wrap the JSON in markdown code blocks (no ``` or ```json). Do NOT include any preamble or explanation before or after:\n"
         "{\n"
         '  "passed": true | false,\n'
         '  "reason": "overall explanation",\n'
@@ -76,7 +76,16 @@ def check_llm_judge(draft: Draft) -> GuardrailVerdict:
 
     # JSON Parsing & Schema Validation
     try:
-        data = json.loads(response_text)
+        clean_text = response_text.strip()
+        if clean_text.startswith("```"):
+            lines = clean_text.splitlines()
+            if lines[0].startswith("```"):
+                lines = lines[1:]
+            if lines and lines[-1].startswith("```"):
+                lines = lines[:-1]
+            clean_text = "\n".join(lines).strip()
+
+        data = json.loads(clean_text)
     except Exception:
         return GuardrailVerdict(
             rule=RULE_NAME,

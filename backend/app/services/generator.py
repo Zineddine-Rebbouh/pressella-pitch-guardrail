@@ -57,9 +57,9 @@ def generate_pitch(
     )
 
     try:
-        client = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY", "dummy-key"))
+        client = Anthropic()
         response = client.messages.create(
-            model="claude-3-5-sonnet-20241022",
+            model="kr/claude-sonnet-4.5",
             max_tokens=1024,
             system=system_prompt,
             messages=[{"role": "user", "content": user_prompt}],

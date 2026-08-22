@@ -226,3 +226,26 @@ def test_failsafe_malformed_flagged_claim_entry(mock_anthropic):
     assert verdict.rule == "llm_judge"
     assert verdict.passed is False
     assert verdict.reason == "Judge response schema invalid — failing safe."
+
+
+@patch("app.guardrails.llm_judge.Anthropic")
+def test_markdown_code_fence_stripping(mock_anthropic):
+    """Parses JSON successfully even if model wraps response in ```json ... ``` markdown code fences."""
+    response_payload = {
+        "passed": True,
+        "reason": "Tone aligns with brief and all claims are traceable to profile.",
+        "flagged_claims": [],
+    }
+    raw_markdown = f"```json\n{json.dumps(response_payload)}\n```"
+    mock_client = MagicMock()
+    mock_anthropic.return_value = mock_client
+    mock_client.messages.create.return_value = build_mock_response(raw_markdown)
+
+    draft = create_draft()
+    verdict = check_llm_judge(draft)
+
+    assert isinstance(verdict, GuardrailVerdict)
+    assert verdict.rule == "llm_judge"
+    assert verdict.passed is True
+    assert verdict.reason == response_payload["reason"]
+

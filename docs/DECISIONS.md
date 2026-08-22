@@ -224,5 +224,25 @@ actually appear in — and cause problems for — outbound PR pitches.
 
 - *Require Python 3.14+ in CI:* Fails on standard GitHub Actions runners where Python 3.12 is the primary stable runtime.
 
+---
+
+## ADR-013 — llm_judge hardened against markdown-fence-wrapped responses
+
+**Date:** 2026-08-22
+
+**Status:** Accepted
+
+**Decision:** Harden `check_llm_judge` (`backend/app/guardrails/llm_judge.py`) using two complementary layers:
+1. **System Prompt Hardening:** Add explicit instructions prohibiting markdown code blocks (`Do NOT wrap the JSON in markdown code blocks (no ``` or ```json)`).
+2. **Defensive Stripping:** Strip leading/trailing markdown code fences from `response_text` prior to calling `json.loads()`.
+
+**Justification:** Discovered during a live Stage 6 walkthrough with a real LLM (`kr/claude-sonnet-4.5` via gateway). Mocked unit tests control the response string format directly and never surfaced this issue. Real models frequently wrap JSON responses in markdown code blocks despite prompt instructions. Without defensive stripping, `json.loads` fails and short-circuits to the generic `unparseable` fail-safe path instead of parsing structured verdicts. A dedicated unit test (`test_markdown_code_fence_stripping` in `backend/tests/guardrails/test_llm_judge.py:230`) verifies that wrapped responses parse cleanly into valid verdicts.
+
+**Alternatives considered:**
+
+- *Prompt change only:* Fragile across different LLM providers or gateway wrappers.
+- *Stripping code only:* Leaves system prompt ambiguous for model output formatting.
+
+
 
 
