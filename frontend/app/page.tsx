@@ -132,7 +132,7 @@ export default function Home() {
               Pressella Outbound Compliance Engine
             </span>
           </div>
-          <h1 className="font-serif text-4xl font-bold text-slate-100 tracking-tight leading-tight">
+          <h1 className="font-sans text-3xl font-bold text-slate-100 tracking-tight leading-tight">
             Pitch Intake & Briefing Dossier
           </h1>
           <p className="font-sans text-sm text-slate-400 mt-3 max-w-xl mx-auto leading-relaxed">

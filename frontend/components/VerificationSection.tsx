@@ -32,7 +32,7 @@ export function VerificationSection({
     <div className="px-8 py-8 flex-1">
       {/* Verify header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="font-serif text-2xl font-bold text-text-primary tracking-tight">
+        <h2 className="font-sans text-xl font-bold text-text-primary tracking-tight">
           Compliance Audit Pipeline
         </h2>
         <button

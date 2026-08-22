@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* ── Human-Designed Editorial Compliance System ── */
+/* ── System UI Compliance Console Theme ── */
 :root {
   --bg-base: #0a0b10;
   --bg-surface: #12141d;
@@ -42,16 +42,16 @@
   --color-accent-primary: var(--accent-primary);
   --color-accent-hover: var(--accent-hover);
   --color-focus-ring: var(--focus-ring);
-  --font-serif: var(--font-playfair);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-jetbrains);
+  --font-serif: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* ── Base Typography ── */
+/* ── Base System UI Typography ── */
 body {
   background: var(--bg-base);
   color: var(--text-primary);
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -76,7 +76,7 @@ body {
   background: var(--text-dim);
 }
 
-/* ── Focus Ring Utility ── */
+/* ── Focus Ring ── */
 *:focus-visible {
   outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
@@ -108,11 +108,11 @@ body {
   animation: audit-pulse 1.4s ease-in-out infinite;
 }
 
-/* ── Polished Form Field Styling ── */
+/* ── System UI Form Field ── */
 .field-input {
   width: 100%;
-  font-family: var(--font-jetbrains), monospace;
-  font-size: 0.8125rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.875rem;
   line-height: 1.5;
   color: var(--text-primary);
   background: var(--bg-input);
