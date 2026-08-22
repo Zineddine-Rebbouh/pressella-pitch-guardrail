@@ -128,6 +128,12 @@ def record_decision(id: str, req: RecordDecisionRequest):
             detail="Cannot record decision on unverified draft (pending_verification status)",
         )
 
+    if draft.human_decision is not None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Decision already recorded — re-verify to make a new decision.",
+        )
+
     decision_type = (
         HumanDecisionType.APPROVE
         if req.decision == "approve"

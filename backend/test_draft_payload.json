@@ -1,0 +1,14 @@
+{
+  "prospect_profile": {
+    "company_name": "TechFlow Solutions",
+    "contact_role": "VP of Marketing",
+    "industry": "SaaS B2B",
+    "talking_points": "Recently raised $15M Series B, 150% YoY growth, serving 500+ enterprise clients"
+  },
+  "campaign_brief": {
+    "goal": "Secure coverage in TechCrunch and VentureBeat",
+    "tone": "Professional, data-driven, confident",
+    "key_talking_points": "AI-powered workflow automation, enterprise security certifications, rapid customer adoption"
+  },
+  "channel": "email"
+}

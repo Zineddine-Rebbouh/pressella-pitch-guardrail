@@ -1,5 +1,4 @@
 import json
-import os
 from typing import Any
 import anthropic
 from anthropic import Anthropic
@@ -43,9 +42,9 @@ def check_llm_judge(draft: Draft) -> GuardrailVerdict:
     )
 
     try:
-        client = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY", "dummy-key"))
+        client = Anthropic()
         response = client.messages.create(
-            model="claude-3-5-sonnet-20241022",
+            model="kr/claude-sonnet-4.5",
             max_tokens=1024,
             system=system_prompt,
             messages=[{"role": "user", "content": user_prompt}],

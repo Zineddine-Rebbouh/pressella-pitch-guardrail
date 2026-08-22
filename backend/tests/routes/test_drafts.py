@@ -455,3 +455,55 @@ def test_decision_nonexistent_id_returns_404(mock_get_db_path, test_db_path):
     assert response.status_code == 404
     assert "Draft not found" in response.json()["detail"]
 
+
+# ---------------------------------------------------------------------------
+# Case 13: POST /drafts/{id}/decision Twice → 409 Conflict (Decision Immutability)
+# ---------------------------------------------------------------------------
+@patch("app.routes.drafts.get_db_path")
+def test_decision_already_recorded_returns_409_and_preserves_original(
+    mock_get_db_path, test_db_path
+):
+    """Case 13: First decision succeeds (200), second decision returns 409 Conflict.
+
+    Proves decision immutability: once a human decision is recorded on a draft,
+    subsequent decision calls are rejected without overwriting the original.
+    The original decision (approve with note) must survive unchanged — confirmed
+    via GET /drafts/{id} after the rejected second attempt.
+    """
+    mock_get_db_path.return_value = test_db_path
+
+    draft = Draft(
+        channel=Channel.EMAIL,
+        prospect_profile={"company": "Acme"},
+        campaign_brief={"goal": "Immutability test"},
+        generated_pitch=EmailPitch(subject="S", body="B"),
+        status=DraftStatus.VERIFIED_PASS,
+    )
+    save_draft(draft, db_path=test_db_path)
+
+    # First decision — approve (should succeed)
+    res1 = client.post(
+        f"/drafts/{draft.id}/decision",
+        json={"decision": "approve", "note": "Ship it"},
+    )
+    assert res1.status_code == 200
+    assert res1.json()["status"] == "approved"
+    assert res1.json()["human_decision"]["decision"] == "approve"
+    assert res1.json()["human_decision"]["note"] == "Ship it"
+
+    # Second decision — reject (should be blocked)
+    res2 = client.post(
+        f"/drafts/{draft.id}/decision",
+        json={"decision": "reject", "note": "Changed my mind"},
+    )
+    assert res2.status_code == 409
+    assert "already recorded" in res2.json()["detail"].lower()
+
+    # GET confirms original decision is intact
+    res3 = client.get(f"/drafts/{draft.id}")
+    assert res3.status_code == 200
+    data = res3.json()
+    assert data["status"] == "approved"
+    assert data["human_decision"]["decision"] == "approve"
+    assert data["human_decision"]["note"] == "Ship it"
+
