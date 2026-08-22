@@ -1,0 +1,101 @@
+{
+  "timestamp": "2026-08-22 12:12:42",
+  "passed": 21,
+  "failed": 0,
+  "warnings": 1,
+  "details": {
+    "passed_tests": [
+      {
+        "test": "Backend health check",
+        "details": "Status: {'status': 'ok'}"
+      },
+      {
+        "test": "Frontend accessibility",
+        "details": "HTTP 200"
+      },
+      {
+        "test": "Draft creation",
+        "details": "Draft ID: 45d1d37d-836b-48..."
+      },
+      {
+        "test": "Draft initial status",
+        "details": "Status is 'pending_verification'"
+      },
+      {
+        "test": "Email pitch generation",
+        "details": "Subject: TechFlow's 150% Growth Story + AI Automation Angle..."
+      },
+      {
+        "test": "Guardrail verification endpoint",
+        "details": "Verification completed"
+      },
+      {
+        "test": "Verification rounds created",
+        "details": "1 round(s) recorded"
+      },
+      {
+        "test": "All guardrails executed",
+        "details": "5 rules checked: pii, banned_phrases, channel_format, unsubstantiated_claims, llm_judge"
+      },
+      {
+        "test": "LLM judge execution",
+        "details": "Judge evaluated successfully"
+      },
+      {
+        "test": "LLM judge flagged claims",
+        "details": "1 claims flagged"
+      },
+      {
+        "test": "Draft status update",
+        "details": "Status correctly set to 'verified_fail'"
+      },
+      {
+        "test": "Draft retrieval",
+        "details": "Draft 45d1d37d-836b-48... retrieved"
+      },
+      {
+        "test": "Data persistence",
+        "details": "Draft data matches original"
+      },
+      {
+        "test": "Human decision recording",
+        "details": "Decision recorded successfully"
+      },
+      {
+        "test": "Decision data accuracy",
+        "details": "Decision: approve, Note: Test approval from walkthrough"
+      },
+      {
+        "test": "Decision timestamp",
+        "details": "Timestamp recorded"
+      },
+      {
+        "test": "Decision status update",
+        "details": "Status updated to 'approved'"
+      },
+      {
+        "test": "404 error handling",
+        "details": "Correctly returns 404 for nonexistent draft"
+      },
+      {
+        "test": "Invalid payload handling",
+        "details": "Correctly rejects invalid data with HTTP 422"
+      },
+      {
+        "test": "SMS channel support",
+        "details": "Generated text message (264 chars)"
+      },
+      {
+        "test": "WHATSAPP channel support",
+        "details": "Generated text message (472 chars)"
+      }
+    ],
+    "failed_tests": [],
+    "warnings": [
+      {
+        "test": "Local gateway health check",
+        "message": "HTTP 404"
+      }
+    ]
+  }
+}
