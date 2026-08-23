@@ -82,7 +82,6 @@ Create a `.env` file in `backend/`:
 
 ```env
 ANTHROPIC_API_KEY=your_api_key_here
-ANTHROPIC_BASE_URL=http://localhost:20128/v1  # Or default Anthropic API endpoint
 ```
 
 ### 2. Running the Backend
@@ -120,20 +119,3 @@ python -m pytest -m "not integration"
 ```
 
 ---
-
-## What I'd Do Next (Production Roadmap)
-
-1. **Confidence-Tiered Fail-Safe Reporting**  
-   Distinguish raw LLM parsing failures (e.g. timeout / network / malformed output) from policy rule violations in the UI. Provide visual indicators so reviewers know whether a draft failed due to compliance content or technical infrastructure issues.
-
-2. **Externalized Deny-List Management**  
-   Move the G2 banned-phrase starter list from code constants to a dynamic database table or configuration service (YAML/Redis), allowing compliance officers to update regex rules at runtime without code releases.
-
-3. **Advanced Semantic Claim Extraction (G4 Upgrade)**  
-   Upgrade G4 from regex pattern matching to spaCy NER / dependency parsing to extract implicit numeric claims ("doubled our revenue", "forty percent growth") and handle range comparisons ("between $10k and $50k").
-
-4. **Visual Character-Offset Overlay in Review Console**  
-   Render interactive inline highlight overlays in the pitch body matching character offsets returned by G1 (PII), G2 (banned phrases), and G4 (unsubstantiated claims).
-
-5. **Live LLM Integration Test Suite in CI**  
-   Maintain an isolated nightly test suite (`@pytest.mark.integration`) hitting live LLM endpoints to detect prompt drift and schema changes across model versions.
